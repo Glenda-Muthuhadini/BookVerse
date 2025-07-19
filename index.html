@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookVerse - A Universe of Books Awaits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #fdfcf8;
+            --secondary-bg: #f8f6f0;
+            --accent-color: #8b4513;
+            --text-primary: #2c1810;
+            --text-secondary: #5d4e37;
+            --border-color: #e8e5de;
+            --shadow: rgba(139, 69, 19, 0.1);
+            --gradient: linear-gradient(135deg, #8b4513 0%, #d2691e 100%);
+        }
+
+        [data-theme="dark"] {
+            --primary-bg: #1a1611;
+            --secondary-bg: #2a251f;
+            --accent-color: #d4a574;
+            --text-primary: #f5f1e8;
+            --text-secondary: #c7b299;
+            --border-color: #3d352a;
+            --shadow: rgba(212, 165, 116, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--primary-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .logo:hover::after {
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: var(--gradient);
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .cart-badge {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 100px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(139, 69, 19, 0.05) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .hero-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-stack {
+            position: relative;
+            transform: perspective(1000px) rotateY(-15deg);
+            transition: transform 0.3s ease;
+        }
+
+        .book-stack:hover {
+            transform: perspective(1000px) rotateY(-10deg) scale(1.05);
+        }
+
+        .book {
+            width: 220px;
+            height: 280px;
+            background: var(--gradient); /* You can keep this as fallback */
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 15px 35px var(--shadow);
+            margin-bottom: -50px;
+        }
+
+        .book img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            border-radius: 6px;
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            transition: transform 0.3s ease;
+        }
+
+        .book:hover img {
+            transform: scale(1.05);
+        }
+
+
+        .book:nth-child(2) {
+            background: linear-gradient(135deg, #654321 0%, #8b4513 100%);
+            transform: rotate(-5deg) translateX(20px);
+            z-index: -1;
+        }
+
+        .book:nth-child(3) {
+            background: linear-gradient(135deg, #d2691e 0%, #ff7f50 100%);
+            transform: rotate(8deg) translateX(-30px);
+            z-index: -2;
+        }
+
+        /* Featured Books Section */
+        .featured-section {
+            padding: 6rem 0;
+            background: var(--secondary-bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--accent-color);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .book-card {
+            background: var(--primary-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 25px var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .book-card:hover::before {
+            left: 100%;
+        }
+
+        .book-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .book-image {
+            width: 100%;
+            height: 300px;
+            background: var(--gradient); /* fallback background */
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-image img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .book-image img:hover {
+            transform: scale(1.05);
+        }
+
+
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-author {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .book-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .view-all-btn {
+            display: block;
+            margin: 0 auto;
+            background: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 20VW;
+        }
+
+        .view-all-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature {
+            padding: 2rem;
+            border-radius: 15px;
+            background: var(--secondary-bg);
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            color: var(--primary-bg);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--secondary-bg);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-image {
+                order: -1;
+                margin-bottom: 2rem;
+            }
+
+            .book-stack {
+                transform: scale(0.8);
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">BookVerse</a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="products.html">Books</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="cart-btn" id="cartBtn">
+                    🛒 <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero loading">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Escape into Stories</h1>
+                <p class="hero-subtitle">Your curated collection of must-reads awaits. Discover worlds beyond imagination.</p>
+                <a href="products.html" class="cta-button">
+                    Browse Books <span>📚</span>
+                </a>
+            </div>
+            <div class="hero-image">
+                <div class="book-stack">
+                    <div class="book">
+                        <img src="BOOK1.jpg" alt="Book 1">
+                    </div>
+                    <div class="book">
+                        <img src="BOOK2.jpg" alt="Book 2">
+                    </div>
+                    <div class="book">
+                        <img src="BOOK3.jpg" alt="Book 3">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Featured Books Section -->
+    <section class="featured-section loading">
+        <div class="container">
+            <h2 class="section-title">Featured Collections</h2>
+            <div class="books-grid" id="featuredBooks">
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="The Midnight Library.webp" alt="The Midnight Library" />
+                    </div>
+
+                    <h3 class="book-title">The Midnight Library</h3>
+                    <p class="book-author">by Matt Haig</p>
+                    <div class="book-price">$24.99</div>
+                    <button class="add-to-cart" onclick="addToCart('The Midnight Library', 24.99)">Add to Cart</button>
+                </div>
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="Atomic Habits.webp" alt="The Midnight Library" />
+                    </div>
+                    <h3 class="book-title">Atomic Habits</h3>
+                    <p class="book-author">by James Clear</p>
+                    <div class="book-price">$19.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Atomic Habits', 19.99)">Add to Cart</button>
+                </div>
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="The Seven Husbands.webp" alt="The Midnight Library" />
+                    </div>
+                    <h3 class="book-title">The Seven Husbands</h3>
+                    <p class="book-author">by Taylor Jenkins Reid</p>
+                    <div class="book-price">$22.99</div>
+                    <button class="add-to-cart" onclick="addToCart('The Seven Husbands', 22.99)">Add to Cart</button>
+                </div>
+                <div class="book-card">
+                    <div class="book-image">
+                        <img src="Project Hail Mary.webp" alt="The Midnight Library" />
+                    </div>
+                    <h3 class="book-title">Project Hail Mary</h3>
+                    <p class="book-author">by Andy Weir</p>
+                    <div class="book-price">$26.99</div>
+                    <button class="add-to-cart" onclick="addToCart('Project Hail Mary', 26.99)">Add to Cart</button>
+                </div>
+            </div>
+            <a href="products.html" class="view-all-btn">View All Books</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section loading">
+        <div class="container">
+            <div class="about-content">
+                <h2 class="about-title">Why Choose BookVerse?</h2>
+                <p class="about-text">
+                    At BookVerse, we believe every story deserves to find its perfect reader. Our carefully curated selection 
+                    brings together timeless classics, contemporary bestsellers, and hidden gems from around the world. 
+                    Whether you're seeking adventure, knowledge, or escape, your next favorite book is waiting here.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">📚</div>
+                    <h3>Curated Selection</h3>
+                    <p>Hand-picked books by literary enthusiasts who understand great storytelling.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Fast Delivery</h3>
+                    <p>Get your books delivered quickly so you can start your next adventure sooner.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💝</div>
+                    <h3>Gift Ready</h3>
+                    <p>Beautiful packaging that makes every purchase feel like a special occasion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BookVerse</h3>
+                    <p>Your universe of stories awaits. Discover, explore, and escape into the magic of books.</p>
+                    <br><br>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">📘</a>
+                        <a href="#" class="social-icon">📷</a>
+                        <a href="#" class="social-icon">🐦</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Fiction</a></li>
+                        <li><a href="#">Non-Fiction</a></li>
+                        <li><a href="#">Mystery</a></li>
+                        <li><a href="#">Romance</a></li>
+                        <li><a href="#">Sci-Fi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Customer Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Track Order</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BookVerse. All rights reserved. Made with 💙 By Creative Vision Studio.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        let cart = [];
+        let cartCount = 0;
+
+        function addToCart(title, price) {
+            cart.push({ title, price });
+            cartCount++;
+            updateCartBadge();
+            
+            // Show feedback
+            showNotification(`"${title}" added to cart!`);
+        }
+
+        function updateCartBadge() {
+            document.getElementById('cartBadge').textContent = cartCount;
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--gradient);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                z-index: 10000;
+                box-shadow: 0 8px 25px var(--shadow);
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for loading animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe loading elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingElements = document.querySelectorAll('.loading');
+            loadingElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.8s ease';
+                observer.observe(el);
+            });
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Cart button click handler
+        document.getElementById('cartBtn').addEventListener('click', () => {
+            if (cartCount === 0) {
+                showNotification('Your cart is empty. Add some books!');
+            } else {
+                showNotification(`You have ${cartCount} item${cartCount > 1 ? 's' : ''} in your cart.`);
+            }
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
